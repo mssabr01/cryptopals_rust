@@ -1,32 +1,35 @@
 use base64;
 use hex;
 
+//Converts a hex string to base64
 fn hex_to_base64(hex_str: &str) -> Result<String, hex::FromHexError>
 {
     let byte_array: Vec<u8> = hex::decode(hex_str)?;
     Ok(base64::encode(byte_array))
 }
 
-//fn xor(byte_array1: Vec<u8>, byte_array2: Vec<u8>) -> Result<Vec<u8>, >
-
-fn xor_hex(hex_str1: &str, hex_str2: &str) -> Result<String, hex::FromHexError>
+//XORs two byte arrays
+fn xor(byte_array1: Vec<u8>, byte_array2: Vec<u8>) -> Vec<u8>
 {
-    if hex_str1.len() != hex_str2.len() {
-         return Err(hex::FromHexError::InvalidStringLength);
-    }
-
-    let byte_array1: Vec<u8> = hex::decode(hex_str1)?;
-    let byte_array2: Vec<u8> = hex::decode(hex_str2)?;
-    let mut result:  Vec<u8> = vec![0; byte_array1.len()];
-    //now how to xor these byte arrays?
+    let mut result: Vec<u8> = vec![0; byte_array1.len()];
     let mut i: usize = 0;
     while i < byte_array1.len()
     {
         result[i] = byte_array1[i] ^ byte_array2[i];
         i += 1;
     }
+    result
+}
 
-    Ok(hex::encode(result))
+//XORs two hex strings
+fn xor_hex(hex_str1: &str, hex_str2: &str) -> Result<String, hex::FromHexError>
+{
+    if hex_str1.len() != hex_str2.len() {
+         return Err(hex::FromHexError::InvalidStringLength);
+    }
+    let byte_array1: Vec<u8> = hex::decode(hex_str1)?;
+    let byte_array2: Vec<u8> = hex::decode(hex_str2)?;
+    Ok(hex::encode(xor(byte_array1, byte_array2)))
 }
 
 #[cfg(test)]
