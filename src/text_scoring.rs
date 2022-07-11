@@ -175,7 +175,7 @@ pub mod challenge_3 {
     }
 
     #[test]
-    fn decrypt_challenge_3(){
+    fn challenge_3(){
         let key: u8 = guess_u8_xor_key("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736");
         let byte_array: Vec<u8> = hex::decode("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736").unwrap();
         let xord_text:Vec<u8> = xor_with_key(&byte_array, &vec![key]);
@@ -202,7 +202,7 @@ pub mod challenge_3 {
 
     #[test]
     fn test_score_text() {
-        assert_eq!( (score_text(count_chars("")) * 1000.0) as u32, 3844);     //score text returns a float but I'm getting different answers on different runs
-        assert_eq!( (score_text(count_chars("tbtbu")) * 1000.0) as u32, 6631);  // so I'm only testing against the most significant digits
+        assert_eq!(score_text(count_chars("")) as u32, 3844);     //score text returns a float but I'm getting different answers on different runs
+        assert_eq!(score_text(count_chars("tbtbu")) as u32, 6631);  // so I'm only testing against the most significant digits
     }
 }
