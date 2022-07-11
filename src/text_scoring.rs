@@ -135,7 +135,6 @@ fn count_chars(text: &str) -> HashMap<char, f32> {
 // tries every potential u8 key and returns the one that scores the best
 fn guess_u8_xor_key(text: &str) -> u8{
 
-    let mut test_key: u32 = 0;
     let mut best_performing_key: u8 = 0;
     let mut best_performance:f32 = 1000000.0;
     let byte_array: Vec<u8> = hex::decode(text).unwrap();
@@ -157,6 +156,7 @@ fn guess_u8_xor_key(text: &str) -> u8{
 
 #[cfg(test)]
 pub mod challenge_3 {
+    //https://cryptopals.com/sets/1/challenges/3
     //Single-byte XOR cipher
     //The hex encoded string:
 
