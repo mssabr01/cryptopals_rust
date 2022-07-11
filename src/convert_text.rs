@@ -32,6 +32,30 @@ fn xor_hex(hex_str1: &str, hex_str2: &str) -> Result<String, hex::FromHexError>
     Ok(hex::encode(xor(byte_array1, byte_array2)))
 }
 
+//XORs a byte array with a key
+pub fn xor_with_key(byte_array: &Vec<u8>, key: &Vec<u8>) -> Vec<u8>{
+
+    //if the vec and key are not multiples then return vec of 0s for now
+    if byte_array.len() % key.len() != 0{
+        return vec![0];
+    }
+
+    let mut result: Vec<u8> = vec![0; byte_array.len()];
+    let mut i: usize = 0;
+    let mut j: usize;
+    while i < byte_array.len()
+    {
+        j = 0;
+        while j < key.len(){
+            result[i] = byte_array[i] ^ key[j];
+            i += 1;
+            j += 1;
+        }
+    }
+    result
+}
+
+
 #[cfg(test)]
 pub mod challenge_1 {
     //https://cryptopals.com/sets/1/challenges/1
@@ -126,5 +150,21 @@ pub mod challenge_2 {
     fn unequal_vectors2()
     {
         assert_eq!(xor_hex("a12a","b13cb1"), Err(hex::FromHexError::InvalidStringLength));
+    }
+
+    #[test]
+    fn xor_with_1_bit_key()
+    {
+        assert_eq!(xor_with_key(&vec![1,2,3,4],&vec![1]), vec![0,3,2,5]);
+    }
+    #[test]
+    fn xor_with_multi_bit_key()
+    {
+        assert_eq!(xor_with_key(&vec![1,2,3,4],&vec![1,2]), vec![0,0,2,6]);
+    }
+    #[test]
+    fn xor_with_uneven_key()
+    {
+        assert_eq!(xor_with_key(&vec![1,2,3,4],&vec![1,2,4]), vec![0]);
     }
 }
